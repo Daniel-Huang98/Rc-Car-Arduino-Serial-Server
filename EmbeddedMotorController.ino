@@ -9,17 +9,17 @@ struct data{
   char checksum;
 } typedef Data; //set data structure. Contains speed and angle duty cycle value + checksum
 
-char head[4] = {36,70,42,100}; //Set header value (4 byte header probably unnecessary)
+char head[4] = {36,70}; //Set header value 2 byte header 
 
-long inputHeader = 0;
-long* comparisonHeader = (long*)head; //store header as long value since uno is 16 bit 
+int inputHeader = 0;
+int* comparisonHeader = (int*)head; //store header as long value since uno is 16 bit 
 
 int speed = 90; //initialise initial speed and angle values    
 int angle = 90;
 char incomingByte; //initalise recieved byte var 
  
-Data* value = calloc(sizeof(Data),1); //initialise storage struct
-char checksum = 36+70+42+100; //initalise checksum 
+Data* value = (Data*)calloc(sizeof(Data),1); //initialise storage struct
+char checksum = 36+70; //initalise checksum 
 
 void setup() {
   Throttle.attach(5); //throttle output at pin 5
@@ -49,6 +49,6 @@ void loop() {
        Throttle.write(value->speed);
        Steering.write(value->angle);
     }
-    checksum = 36+70+42+100; //reset checksum value
+    checksum = 36+70; //reset checksum value
     inputHeader = 0; //reset header storage
 }
