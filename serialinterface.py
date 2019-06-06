@@ -11,7 +11,7 @@ def SendSpeed(steering, speed): #servo and motor interface
 #max steering range is 115 to 60
 
 
-ser = serial.Serial('/dev/ttyACM0') #open serial port 
+ser = serial.Serial('/dev/ttyUSB0') #open serial port 
 
 steering = 115 #sample values 
 speed = 90
