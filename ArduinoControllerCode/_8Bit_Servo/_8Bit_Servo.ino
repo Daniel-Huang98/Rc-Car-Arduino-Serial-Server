@@ -46,13 +46,26 @@ void readInData(char* dataPointer){
   dataPointer[2] = Serial.read();
 }
 
+void connect(){
+    while(true){
+      readInData(dataPointer);
+      if(value->angle == 'F'){
+         return; 
+      }
+      Serial.print("Steering$");  
+    }
+  
+}
 void setup() {
   Serial.begin(9600); 
   Steering.attach(4);
   Steering.write(90);
+  connect();
+  Serial.flush();
 }
 
 void loop() {
+  Serial.print("$"); 
   checkHeader();
   while(Serial.available() < 3);
   readInData(dataPointer);

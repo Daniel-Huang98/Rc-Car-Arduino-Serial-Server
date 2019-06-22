@@ -1,6 +1,11 @@
+import serial
+import time
+
+#/dev/ttyUSB1
+
 class ArduinoHandler:
-    def __init__(self,ser):
-        self.ser = ser
+    def __init__(self,serialIn):
+        self.serialIn = serialIn
     
 
     def SendVal(self,val): #servo and motor interface
@@ -13,14 +18,38 @@ class ArduinoHandler:
         pass
     
     def connect(self):
-        pass
+        out = ""
+        flag = 0
+        print("connecting to device")
+        while(True):
+            try:
+                self.ser = serial.Serial(self.serialIn) #open serial port 
+                break
+            except:
+                pass
+        self.ser.flushInput()
+        while(self.ser.inWaiting()<= 0):
+            self.SendVal(255)
+            time.sleep(1)
+        while(self.ser.inWaiting()>0):
+            inVal = self.ser.read(1)
+            if(chr(inVal[0]) == '$'):
+                break
+            out += str(chr(inVal[0]))
+        print("connected to", out)
+    
+    def close(self):
+        self.ser.close()
 
 
 class Steering(ArduinoHandler):
     def Test(self):
-        flagSteering = 1
+        print("running steering test")
+        flagSteering = 0
+        steering = 90
         while(True):
             #steering
+            print(steering)
             if(steering >= 115):
                 flagSteering = 0
             elif(steering <= 60):
@@ -31,22 +60,21 @@ class Steering(ArduinoHandler):
                 steering+=1
             #endsteering
             self.SendVal(steering)
-    def connect(self):
-        pass
+    
 
 class Throttle(ArduinoHandler):
     def Test(self):
         flagSpeed = 1
+        speed = 26000
         while(True):
-            if(speed >= 27000):
+            if(speed >= 26500):
                 flagSpeed = 0
-            elif(speed <= 25500):
+            elif(speed <= 26000):
                 flagSpeed = 1
             if(flagSpeed == 0):
                 speed+=-1
             elif(flagSpeed == 1):
                 speed+=1
-            self.SendVal(steering)
+            self.SendVal(speed)
     
-    def connect(self):
-        pass
+    

@@ -13,7 +13,7 @@ def SendSpeed(speed): #servo and motor interface
     
 
 
-ser = serial.Serial('/dev/ttyUSB0') #open serial port 
+ser = serial.Serial('/dev/ttyUSB2') #open serial port 
 
 steering = 115 #sample values 
 speed = 25500

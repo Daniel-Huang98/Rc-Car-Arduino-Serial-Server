@@ -46,21 +46,33 @@ void readInData(char* dataPointer){
   dataPointer[2] = Serial.read();
 }
 
+void connect(){
+    while(true){
+      readInData(dataPointer);
+      if(value->speed == 'F'){
+         return; 
+      }
+      Serial.print("Throttle$");  
+    }
+}
+
 void setup() {
   Serial.begin(9600); 
   setupPWM16();
   analogWrite16(9, 25500);
   delay(2000);
+  connect();
+  Serial.flush();
 }
 
 void loop() {
+   
   checkHeader();
   while(Serial.available() < 3);
   readInData(dataPointer);
   if(calCheckSum(dataPointer) != value->checksum){
      if(value->speed > MAXSPEED)value->speed = MAXSPEED;
      analogWrite16(9, value->speed);
-     
   }
 }
 

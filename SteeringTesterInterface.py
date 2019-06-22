@@ -12,7 +12,6 @@ def SendVal(val,ser): #servo and motor interface
     ser.write((('F${}{}{}').format(chr(byteH),chr(byteL),chr(checksum))).encode('utf-8')) #format into ascii string and then write to port
     
 
-
 steeringSer = serial.Serial('/dev/ttyUSB1') #open serial port 
 
 steering = 90 #sample values 
