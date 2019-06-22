@@ -4,32 +4,30 @@ import time
 #serial interface example
 #written by Daniel Huang 
 
-def SendSpeed(speed): #servo and motor interface
-    byteL = speed & 0xFF
-    byteH = (speed >> 8) & 0xFF
+def SendVal(val,ser): #servo and motor interface
+    byteL = val & 0xFF
+    byteH = (val >> 8) & 0xFF
     print (byteH,byteL)
     checksum = (70+36+byteL+byteH)%256 #calc 8bit checksum 
     ser.write((('F${}{}{}').format(chr(byteH),chr(byteL),chr(checksum))).encode('utf-8')) #format into ascii string and then write to port
     
 
 
-ser = serial.Serial('/dev/ttyUSB0') #open serial port 
+steeringSer = serial.Serial('/dev/ttyUSB1') #open serial port 
 
-steering = 115 #sample values 
-speed = 25500
-steering = 60
+steering = 90 #sample values 
 flag = 1
 
 while(True): #makes servo move back and forth and motor start and stop indefinitely 
-    if(speed >= 27000):
+    if(steering >= 115):
         flag = 0
-    elif(speed <= 25500):
+    elif(steering <= 60):
         flag = 1
     if(flag == 0):
-        speed+=-1
+        steering+=-1
     elif(flag == 1):
-        speed+=1
-    print ("speed: ", speed)
-    SendSpeed(speed)
+        steering+=1
+    print ("speed: ", steering)
+    SendVal(steering,steeringSer)
 
-ser.close() #close serial port
+steeringSer.close() #close serial port
