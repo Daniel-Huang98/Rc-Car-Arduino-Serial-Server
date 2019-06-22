@@ -47,11 +47,11 @@ void readInData(char* dataPointer){
 
 void connect(){
     while(true){
-      readInData(dataPointer);
-      if(value->speed == 'F'){
+      Serial.print("AF");
+     
+      if(Serial.available() > 0){
          return; 
       }
-      Serial.print("Throttle$");  
     }
 }
 
@@ -60,10 +60,8 @@ void setup() {
   setupPWM16();
   analogWrite16(9, 25500);
   delay(2000);
-  while(true){
-    Serial.print("AF");
-    Serial.flush();
-  }
+  connect();
+  Serial.flush();
 }
 
 void loop() {

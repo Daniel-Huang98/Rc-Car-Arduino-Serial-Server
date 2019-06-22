@@ -23,7 +23,7 @@ class Arduino():
         while(True):
             if(ser.inWaiting()>0):
                 inVal = ser.read(1)
-                print(inVal)
+                #print(inVal)
                 if(chr(inVal[0]) == '$'):
                     break
                 out += str(chr(inVal[0]))
@@ -38,17 +38,17 @@ class Arduino():
                 return
 
 
-    def write(self,val):
+    def write(self,val,ser):
         byteL = val & 0xFF
         byteH = (val >> 8) & 0xFF
         checksum = (70+36+byteL+byteH)%256 #calc 8bit checksum 
-        self.ser.write((('F${}{}{}').format(chr(byteH),chr(byteL),chr(checksum))).encode('utf-8')) #format into ascii string and then write to port
+        ser.write((('F${}{}{}').format(chr(byteH),chr(byteL),chr(checksum))).encode('utf-8')) #format into ascii string and then write to port
 
-    def Connect(self):
-        pass
+    def SendThrottle(self,val):
+        self.write(val,self.Throttle)
 
-    def Control(self):
-        pass
+    def SendSteering(self,val):
+        self.write(val,self.Steering)
 
     def Sync(self):
         test = '/dev/ttyUSB{}'
@@ -65,8 +65,30 @@ class Arduino():
                 print(e)
                 print("Trying: ", input)
                 time.sleep(1)
+    
+    def everything(self):
+        print("Send Everything")
+        flagSteering = 0
+        steering = 90
+        while(True):
+            test.SendSteering(steering)
+            test.SendThrottle(25500)
+
+            print(steering)
+            if(steering >= 115):
+                flagSteering = 0
+            elif(steering <= 60):
+                flagSteering = 1
+            if(flagSteering == 0):
+                steering+=-1
+            elif(flagSteering == 1):
+                steering+=1
 
 
 test = Arduino()
 test.Sync()
+test.everything()
+
+
+
                 
