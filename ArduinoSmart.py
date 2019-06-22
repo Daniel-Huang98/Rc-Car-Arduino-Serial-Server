@@ -70,9 +70,11 @@ class Arduino():
         print("Send Everything")
         flagSteering = 0
         steering = 90
+        flagSpeed = 1
+        speed = 26000
         while(True):
-            test.SendSteering(steering)
-            test.SendThrottle(25500)
+            self.SendSteering(steering)
+            self.SendThrottle(speed)
 
             print(steering)
             if(steering >= 115):
@@ -83,6 +85,16 @@ class Arduino():
                 steering+=-1
             elif(flagSteering == 1):
                 steering+=1
+
+            if(speed >= 26500):
+                flagSpeed = 0
+            elif(speed <= 26000):
+                flagSpeed = 1
+            if(flagSpeed == 0):
+                speed+=-1
+            elif(flagSpeed == 1):
+                speed+=1
+            
 
 
 test = Arduino()
