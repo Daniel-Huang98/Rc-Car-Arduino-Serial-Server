@@ -24,7 +24,6 @@ void checkHeader(){
    while (*comparisonHeader != inputHeader){
       if(Serial.available()){ //header capturing 
         currvalue = Serial.read();
-        Serial.print(currvalue);
         inputHeader = inputHeader << 8;
         inputHeader = inputHeader|currvalue;
       }
@@ -61,12 +60,13 @@ void setup() {
   setupPWM16();
   analogWrite16(9, 25500);
   delay(2000);
-  connect();
-  Serial.flush();
+  while(true){
+    Serial.print("AF");
+    Serial.flush();
+  }
 }
 
 void loop() {
-   
   checkHeader();
   while(Serial.available() < 3);
   readInData(dataPointer);

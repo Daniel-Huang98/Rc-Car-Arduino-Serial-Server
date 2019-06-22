@@ -24,7 +24,6 @@ void checkHeader(){
    while (*comparisonHeader != inputHeader){
       if(Serial.available()){ //header capturing 
         currvalue = Serial.read();
-        Serial.print(currvalue);
         inputHeader = inputHeader << 8;
         inputHeader = inputHeader|currvalue;
       }
@@ -54,18 +53,19 @@ void connect(){
       }
       Serial.print("Steering$");  
     }
-  
 }
+
 void setup() {
   Serial.begin(9600); 
   Steering.attach(4);
   Steering.write(90);
-  connect();
-  Serial.flush();
+  while(true){
+    Serial.print("ST");
+    Serial.flush();
+  }
 }
 
 void loop() {
-  Serial.print("$"); 
   checkHeader();
   while(Serial.available() < 3);
   readInData(dataPointer);

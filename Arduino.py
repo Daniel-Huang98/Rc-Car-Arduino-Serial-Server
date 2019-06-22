@@ -17,6 +17,17 @@ class ArduinoHandler:
     def Test(self):
         pass
     
+    def connectNonSecure(self):
+        print("connecting to device")
+        while(True):
+            try:
+                self.ser = serial.Serial(self.serialIn) #open serial port 
+                print("connected")
+                break
+            except:
+                pass
+
+
     def connect(self):
         out = ""
         flag = 0
