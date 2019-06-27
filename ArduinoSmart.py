@@ -48,6 +48,11 @@ class Arduino():
         self.write(val,self.Throttle)
 
     def SendSteering(self,val):
+        val = val + 90
+        if val < 65:
+            val = 65
+        elif val > 115:
+            val = 115
         self.write(val,self.Steering)
 
     def Sync(self):
@@ -97,9 +102,7 @@ class Arduino():
             
 
 
-test = Arduino()
-test.Sync()
-test.everything()
+
 
 
 
